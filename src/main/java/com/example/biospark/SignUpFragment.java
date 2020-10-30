@@ -1,12 +1,33 @@
 package com.example.biospark;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.media.browse.MediaBrowser;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +48,7 @@ public class SignUpFragment extends Fragment {
     public SignUpFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -55,10 +77,193 @@ public class SignUpFragment extends Fragment {
         }
     }
 
+    private TextView alreadyHaveAnId;
+    private FrameLayout parentFrameLayout;
+
+    private EditText email;
+    private EditText fullName;
+    private EditText pass;
+    private EditText confirmPass;
+
+    private ImageButton closeBtn;
+    private Button signUpBtn;
+
+    private ProgressBar progressBar;
+
+    private FirebaseAuth firebaseAuth;
+    private String emailPattern =  "[a-zA-Z0-9._-]+@[a-z]+.[a-z]+";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up, container, false);
+        View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+
+        alreadyHaveAnId = view.findViewById(R.id.tv_already_have_an_id);
+
+        parentFrameLayout = getActivity().findViewById(R.id.register_framelayout);
+
+        email = view.findViewById(R.id.sign_up_email);
+        fullName = view.findViewById(R.id.sign_up_fullname);
+        pass = view.findViewById(R.id.sign_up_pass);
+        confirmPass = view.findViewById(R.id.sign_up_confirm_pass);
+
+        closeBtn = view.findViewById(R.id.sign_up_close_btn);
+        signUpBtn = view.findViewById(R.id.sign_up_btn);
+
+        progressBar = view.findViewById(R.id.sign_up_progressbar);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        alreadyHaveAnId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFragment(new SignInFragment());
+            }
+        });
+
+        email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                chkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        fullName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                chkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        pass.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                chkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        confirmPass.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                chkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chkEmailAndPass();
+            }
+        });
+    }
+    private void setFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_from_left,R.anim.slideout_from_right);
+        fragmentTransaction.replace(parentFrameLayout.getId(),fragment);
+        fragmentTransaction.commit();
+    }
+    private void chkInputs(){
+        if(!TextUtils.isEmpty(email.getText())){
+            if(!TextUtils.isEmpty(fullName.getText())){
+                if(!TextUtils.isEmpty(pass.getText()) && pass.length() >= 8){
+                    if(!TextUtils.isEmpty(confirmPass.getText())){
+                        signUpBtn.setEnabled(true);
+                        signUpBtn.setTextColor(Color.rgb(255,255,255));
+                    }else{
+                        signUpBtn.setEnabled(false);
+                        signUpBtn.setTextColor(Color.argb(50,255,255,255));
+                    }
+                }else{
+                    signUpBtn.setEnabled(false);
+                    signUpBtn.setTextColor(Color.argb(50,255,255,255));
+                }
+            }else{
+                signUpBtn.setEnabled(false);
+                signUpBtn.setTextColor(Color.argb(50,255,255,255));
+            }
+        }else{
+            signUpBtn.setEnabled(false);
+            signUpBtn.setTextColor(Color.argb(50,255,255,255));
+        }
+    }
+    private void chkEmailAndPass(){
+        if(email.getText().toString().matches(emailPattern)){
+            if(pass.getText().toString().equals(confirmPass.getText().toString())){
+
+                progressBar.setVisibility(View.VISIBLE);
+                signUpBtn.setEnabled(false);
+                signUpBtn.setTextColor(Color.argb(50,255,255,255));
+
+                firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(),pass.getText().toString())
+                        // to pass data to firebase
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                // when data will get passed to database, this will pass the app to mainActivity.
+                                Intent mainIntent = new Intent(getActivity(),MainActivity.class);
+                                startActivity(mainIntent);
+                                getActivity().finish();
+
+                            }else{
+                                progressBar.setVisibility(View.INVISIBLE);
+                                signUpBtn.setEnabled(true);
+                                signUpBtn.setTextColor(Color.rgb(255,255,255));
+                                String error = task.getException().getMessage();
+                                Toast.makeText(getActivity(),error,Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+            }else{
+                confirmPass.setError("Password doesn't match!");
+            }
+        }else{
+            email.setError("Invalid email!");
+        }
     }
 }
