@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/app_bar_main"
+    >
+
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/mobile_navigation"
+        />
+
+    <ImageView
+        android:id="@+id/covid_banner"
+        android:layout_width="wrap_content"
+        android:layout_height="157dp"
+        android:scaleType="fitStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/covid_banner"
+        />
+
+    <ImageView
+        android:id="@+id/first_aid"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/covid_banner"
+        tools:srcCompat="@drawable/first_aid"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="First Aid"
+        android:background="#BBDEFB"
+        android:textAllCaps="true"
+        app:layout_constraintEnd_toEndOf="@+id/first_aid"
+        app:layout_constraintStart_toStartOf="@+id/first_aid"
+        app:layout_constraintTop_toBottomOf="@+id/first_aid"
+        />
+
+    <ImageView
+        android:id="@+id/ambulance"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/hospital"
+        app:layout_constraintStart_toEndOf="@+id/first_aid"
+        app:layout_constraintTop_toBottomOf="@+id/covid_banner"
+        tools:srcCompat="@drawable/ambulance"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#BBDEFB"
+        android:text="Ambulance"
+        android:textAllCaps="true"
+        app:layout_constraintEnd_toEndOf="@+id/ambulance"
+        app:layout_constraintStart_toStartOf="@+id/ambulance"
+        app:layout_constraintTop_toBottomOf="@+id/ambulance"
+        />
+
+    <ImageView
+        android:id="@+id/hospital"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/covid_banner"
+        tools:srcCompat="@drawable/hospital"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#BBDEFB"
+        android:textAllCaps="true"
+        android:text="Hospitals"
+        app:layout_constraintEnd_toEndOf="@+id/hospital"
+        app:layout_constraintStart_toStartOf="@+id/hospital"
+        app:layout_constraintTop_toBottomOf="@+id/hospital"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

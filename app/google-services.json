@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "100600663647",
+    "firebase_url": "https://biospark-5d8f4.firebaseio.com",
+    "project_id": "biospark-5d8f4",
+    "storage_bucket": "biospark-5d8f4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100600663647:android:8f2e1bf239f3e5231b95ea",
+        "android_client_info": {
+          "package_name": "com.example.biospark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "100600663647-jqmm0dckic56lms5dkm7umvqb7ee0tps.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq7jccnGxf-dp4lnFOTO8qJOMVFeBYnP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100600663647-jqmm0dckic56lms5dkm7umvqb7ee0tps.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
